@@ -5,7 +5,8 @@ const db = require('../data/dbConfig.js');
 module.exports = {
     // helper functions:
     getRecipes,
-    getShoppingList
+    getShoppingList,
+    getInstructions
 }
 
 function getRecipes() {
@@ -16,8 +17,21 @@ function getRecipes() {
 // - should return a list of all ingredients...
 // - ... and quantities for a given recipe
 function getShoppingList(id) {
-    return db('recipes')
-                .join('recipe_details', 'recipe_details.recipe_id', 'recipes.id')
-                .select('recipes.id', 'recipes.name', 'recipe_details.ingredient_name', 'recipe_details.quantity', 'recipe_details.units', 'recipe_details.recipe_id')
-                
+    return db('recipe_details')
+        .where('recipe_details.recipe_id', id)
 }
+
+// getInstructions(recipe_id):
+//  should return a list of step by step instructions
+//  for preparing a recipe
+function getInstructions(id) {
+    return db('instructions')
+        .where('instructions.recipe_id', id)
+}
+
+// - GET /api/ingredients/:id/recipes:
+// all recipes in the system that utilize a single ingredient
+// function containedIn(id) {
+//     return db('')
+// }
+
